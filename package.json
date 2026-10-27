@@ -1,0 +1,39 @@
+{
+  "name": "visible-terminal-mcp",
+  "version": "1.0.0",
+  "description": "MCP server that gives an AI agent control of a genuinely visible Windows terminal window — spawn it, type into it, read exactly what's on screen, close it — so a human can watch every action in real time instead of trusting a hidden process.",
+  "main": "src/server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node src/server.js",
+    "example:basic": "node examples/basic-spawn-type-read.js",
+    "example:menu-navigation": "node examples/menu-navigation.js"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "terminal",
+    "windows",
+    "console",
+    "automation",
+    "claude",
+    "claude-code",
+    "ai-agent"
+  ],
+  "author": "Sanjay-dev22",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sanjay-dev22/visible-terminal-mcp.git"
+  },
+  "os": [
+    "win32"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "zod": "^4.6.7"
+  }
+}
