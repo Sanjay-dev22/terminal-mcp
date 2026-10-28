@@ -29,7 +29,39 @@ function runPwsh(args) {
   });
 }
 
-const server = new McpServer({ name: 'visible-terminal-control', version: '0.1.0' });
+const SERVER_INSTRUCTIONS = `
+This server drives a genuinely visible Windows console window — spawn it, type into it,
+read exactly what's on screen, close it. The user can watch the window the whole time;
+treat that as the point of using this server rather than a headless alternative.
+
+Workflow: vterm_spawn -> wait ~1-2s for the window to initialize -> vterm_send -> wait for
+the target program to react (short for a shell prompt, several seconds for something like
+an interactive CLI's full-screen UI to render) -> vterm_read to see the real result ->
+repeat -> vterm_close when done. Always read after sending before deciding what to send
+next — do not chain multiple sends blind based on an assumption of what happened.
+
+Key reliability note: each vterm_send call that includes multiple distinct actions (e.g.
+several "special" keys, or special keys plus enter) issues one real keystroke-delivery
+step per action internally and is reliable. But pace your own calls with realistic waits
+(seconds, not milliseconds) between vterm_send and the following vterm_read — reading too
+soon just shows stale screen content, not a failure.
+
+Focus requirement: this server does not forcibly steal window focus (no SetForegroundWindow).
+Keystrokes go to whatever currently has focus, which is the spawned window immediately
+after vterm_spawn, or after this server last sent to it. If the user clicks elsewhere
+between your calls, keystrokes will go to the wrong window — ask them not to interact with
+the spawned window while you're driving it, exactly as you would with a human watching a
+screen you're both using.
+
+Use "text" for literal characters/commands and "enter" to submit them. Use "special" with
+values UP/DOWN/LEFT/RIGHT/ESC/TAB for navigating menus, pickers, or command-history recall —
+these are not typed as literal text, they are the actual arrow/escape/tab keys.
+`.trim();
+
+const server = new McpServer(
+  { name: 'visible-terminal-control', version: '0.1.0' },
+  { instructions: SERVER_INSTRUCTIONS }
+);
 
 server.registerTool(
   'vterm_spawn',

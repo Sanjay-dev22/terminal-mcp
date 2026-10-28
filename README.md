@@ -59,7 +59,7 @@ Register it with your MCP-compatible client. For Claude Code, add this to your `
 }
 ```
 
-Restart your MCP client, and four tools become available:
+Restart your MCP client, and four tools become available. The server also declares [MCP `instructions`](https://modelcontextprotocol.io) — a usage guide (workflow, pacing, focus requirements) that a compliant client surfaces to the agent automatically on connect, the same way tool descriptions are surfaced. You don't need to paste anything from this README into a prompt for the agent to know how to use the server correctly.
 
 ### `vterm_spawn`
 
